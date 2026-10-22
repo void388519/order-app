@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh-TW"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="theme-color" content="#121118"><title>校園午餐訂餐系統</title><link rel="stylesheet" href="./styles.css"></head><body>
+<svg class="icon-defs" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><defs>
+<symbol id="i-bowl" viewBox="0 0 24 24"><path d="M3 11h18a9 9 0 0 1-18 0ZM8 21h8M8 3v4m4-5v5m4-4v4"/></symbol>
+<symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></symbol>
+<symbol id="i-chart" viewBox="0 0 24 24"><path d="M4 3v18h17M9 16V9m5 7V5m5 11v-5"/></symbol>
+<symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.2 9a3 3 0 0 1 5.8 1c0 2-3 2-3 4m0 3h.01"/></symbol>
+<symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4.5 4.5"/></symbol>
+<symbol id="i-settings" viewBox="0 0 24 24"><path d="m9 3-1 3-3 1-2 4 2 2v4l4 3 3-1 3 1 4-3v-4l2-2-2-4-3-1-1-3Z"/><circle cx="12" cy="12" r="3"/></symbol>
+<symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3 4 6v6c0 5 8 9 8 9s8-4 8-9V6Z"/><path d="m8 12 3 3 5-6"/></symbol>
+<symbol id="i-bag" viewBox="0 0 24 24"><path d="M5 8h14l1 13H4L5 8ZM8 8V6a4 4 0 0 1 8 0v2"/></symbol>
+<symbol id="i-leaf" viewBox="0 0 24 24"><path d="M20 3C8 3 2 7 4 15c3 8 16 4 16-12ZM4 21 16 9"/></symbol>
+<symbol id="i-rice" viewBox="0 0 24 24"><path d="M3 12h18a9 9 0 0 1-18 0ZM5 12V9a3 3 0 0 1 4-3 4 4 0 0 1 7-1 4 4 0 0 1 3 7M8 21h8"/></symbol>
+<symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h15m-6-6 6 6-6 6"/></symbol>
+<symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12m-4-4 4 4 4-4M4 16v5h16v-5"/></symbol>
+<symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 16V4m-4 4 4-4 4 4M4 16v5h16v-5"/></symbol>
+<symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/></symbol>
+<symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3M12 14v3"/></symbol>
+<symbol id="i-print" viewBox="0 0 24 24"><path d="M7 8V3h10v5M7 17H4V9h16v8h-3M7 14h10v7H7ZM16 11h1"/></symbol>
+<symbol id="i-file" viewBox="0 0 24 24"><path d="M14 3H5v18h14V8l-5-5ZM14 3v6h5M8 13h8m-8 4h5"/></symbol>
+</defs></svg>
+<a class="skip-link" href="#menuGrid" style="position:fixed;top:-100px;left:10px;z-index:9999" onfocus="this.style.top='10px'" onblur="this.style.top='-100px'">跳至菜單</a>
+<header class="topbar"><div class="topbar-main">
+ <div class="topbar-left"><a class="brand" href="#" aria-label="校園午餐訂餐系統首頁"><span class="brand-mark"><svg class="ui-icon"><use href="#i-bowl"/></svg></span><span data-i18n="footer_system">校園午餐訂餐系統</span></a></div>
+ <nav class="topbar-nav" aria-label="主要導覽"><a class="active" href="#menuGrid" onclick="navigateTo(event,'menuGrid')"><svg class="ui-icon"><use href="#i-grid"/></svg><span data-i18n="nav_menu">菜單</span></a><a href="#orderSection" onclick="navigateTo(event,'orderSection')"><svg class="ui-icon"><use href="#i-bag"/></svg><span data-i18n="nav_order">訂餐</span></a><a href="#reportSection" onclick="navigateTo(event,'reportSection')"><svg class="ui-icon"><use href="#i-chart"/></svg><span data-i18n="nav_stats">統計</span></a><a href="#help" onclick="event.preventDefault();openHelpModal()"><svg class="ui-icon"><use href="#i-help"/></svg><span data-i18n="nav_help">說明</span></a></nav>
+ <div class="topbar-right"><div style="position:relative"><button class="icon-btn lang-toggle" id="langToggle" title="切換語言" aria-label="切換語言" aria-haspopup="menu" aria-expanded="false">TW</button><div class="lang-dropdown" id="langDropdown">
+          <div class="lang-option active" data-lang="zh" onclick="setLanguage('zh')">
+            <span class="flag">W</span>
+            <span class="lang-name" data-i18n="lang_zh">中文</span>
+            <span class="pct">100%</span>
+          </div>
+          <div class="lang-option" data-lang="zh-CN" onclick="setLanguage('zh-CN')">
+            <span class="flag">C</span>
+            <span class="lang-name" data-i18n="lang_zhcn">简体中文</span>
+            <span class="pct">100%</span>
+          </div>
+          <div class="lang-option" data-lang="yue" onclick="setLanguage('yue')">
+            <span class="flag">Y</span>
+            <span class="lang-name" data-i18n="lang_yue">中文 粵語</span>
+            <span class="pct">100%</span>
+          </div>
+          <div class="lang-option" data-lang="ja" onclick="setLanguage('ja')">
+            <span class="flag">J</span>
+            <span class="lang-name" data-i18n="lang_ja">日本語</span>
+            <span class="pct">100%</span>
+          </div>
+          <div class="lang-option" data-lang="en" onclick="setLanguage('en')">
+            <span class="flag">U</span>
+            <span class="lang-name" data-i18n="lang_en">English</span>
+            <span class="pct">100%</span>
+          </div>
+          <div class="lang-option" data-lang="ko" onclick="setLanguage('ko')">
+            <span class="flag">K</span>
+            <span class="lang-name" data-i18n="lang_ko">한국어</span>
+            <span class="pct">100%</span>
+          </div>
+        </div></div><button class="icon-btn" id="settingsBtn" onclick="openSettingsModal()" title="外觀與設定" aria-label="外觀與設定"><svg class="ui-icon"><use href="#i-settings"/></svg></button><button class="admin-btn" onclick="requestAdminAccess()"><svg class="ui-icon"><use href="#i-shield"/></svg><span data-ui="admin">Admin</span></button></div>
+</div></header>
+<div class="announcement-banner hidden" id="announcementBanner"><svg class="ui-icon"><use href="#i-bag"/></svg><span class="announce-text" id="announcementText"></span><button class="announce-close" onclick="closeAnnouncement()" aria-label="關閉公告">×</button></div>
+<section class="hero">
+ <div class="eyebrow reveal"><span class="status-dot"></span> beta v1.5 [private]</div>
+ <h1 id="heroTitle" class="reveal delay-1" data-i18n="hero_title">校園午餐<br><span class="accent">訂餐系統</span></h1>
+ <p class="subtitle reveal delay-2" data-i18n="hero_subtitle">班級午餐統一登記平台。輸入座號與餐點，自動計算金額與統計數量，方便向餐廳下單與結帳。</p>
+ <div class="search-box reveal delay-2"><svg class="ui-icon"><use href="#i-search"/></svg><input id="menuSearch" type="search" aria-label="搜尋餐點" placeholder="搜尋餐點名稱、食材或類別…" data-ui-placeholder="search" autocomplete="off" oninput="searchMeals(this.value)"><kbd>/</kbd><button id="clearSearch" class="clear-search" onclick="resetSearch()" aria-label="清除搜尋">×</button></div>
+ <div class="meta reveal delay-3"><div><svg class="ui-icon"><use href="#i-bag"/></svg><strong id="heroTotal">0</strong><span data-i18n="meta_orders">總訂單數</span></div><div><svg class="ui-icon"><use href="#i-grid"/></svg><strong id="heroMenuCount">5</strong><span data-i18n="meta_items">菜單品項</span></div><div><strong id="heroAmount">$0</strong><span data-i18n="meta_amount">應繳總額</span></div></div>
+</section>
+<main>
+<div class="workspace">
+ <aside class="sidebar reveal delay-2" aria-label="菜單篩選與工具">
+  <div class="filter-group"><h2 class="filter-title" data-ui="category">餐點分類</h2>
+   <button class="filter-btn active" data-filter="all" onclick="filterMeals('all')" aria-pressed="true"><svg class="ui-icon"><use href="#i-grid"/></svg><span data-ui="all">全部餐點</span><span class="filter-count" id="countAll">5</span></button>
+   <button class="filter-btn" data-filter="bento" onclick="filterMeals('bento')" aria-pressed="false"><svg class="ui-icon"><use href="#i-bag"/></svg><span data-ui="bento">人氣便當</span><span class="filter-count" id="countBento">2</span></button>
+   <button class="filter-btn" data-filter="vegetarian" onclick="filterMeals('vegetarian')" aria-pressed="false"><svg class="ui-icon"><use href="#i-leaf"/></svg><span data-ui="vegetarian">蔬食選擇</span><span class="filter-count" id="countVeg">1</span></button>
+   <button class="filter-btn" data-filter="rice" onclick="filterMeals('rice')" aria-pressed="false"><svg class="ui-icon"><use href="#i-rice"/></svg><span data-ui="rice">經典飯食</span><span class="filter-count" id="countRice">1</span></button>
+   <button class="filter-btn" data-filter="soup" onclick="filterMeals('soup')" aria-pressed="false"><svg class="ui-icon"><use href="#i-bowl"/></svg><span data-ui="soup">暖心湯品</span><span class="filter-count" id="countSoup">1</span></button>
+  </div>
+  <div class="tools-group"><div class="filter-divider"></div><h2 class="filter-title" data-ui="tools">班級小工具</h2><button class="tool-link" onclick="scrollToSection('querySection')"><svg class="ui-icon"><use href="#i-search"/></svg><span data-i18n="section_query">依座號查詢</span></button><button class="tool-link" onclick="scrollToSection('backupSection')"><svg class="ui-icon"><use href="#i-download"/></svg><span data-ui="backup">檔案備份 / 讀取</span></button><button class="tool-link" onclick="openUpdateModal()"><svg class="ui-icon"><use href="#i-clock"/></svg><span data-i18n="update_btn">更新內容</span></button></div>
+  <p class="side-note"><svg class="ui-icon"><use href="#i-lock"/></svg><span data-ui="local">資料保存在此瀏覽器<br>記得定期匯出備份。</span></p>
+ </aside>
+ <div class="menu-column reveal delay-2">
+  <div class="catalog-toolbar"><h2 class="catalog-title"><span data-ui="today">菜單</span><span class="count-pill" id="resultCount">5 款餐點</span></h2><select class="sort-select" id="sortSelect" aria-label="餐點排序" onchange="renderMenuGrid()"><option value="default" data-ui="sortDefault">預設排序</option><option value="low" data-ui="sortLow">價格：由低到高</option><option value="high" data-ui="sortHigh">價格：由高到低</option><option value="name" data-ui="sortName">餐點名稱</option></select></div>
+  <div class="menu-grid" id="menuGrid" aria-label="今日餐點"></div>
+  <p class="catalog-note"><svg class="ui-icon"><use href="#i-help"/></svg><span data-ui="chooseHint">點選餐點卡片，即可快速加入訂餐登記。</span></p>
+  <section class="report-section" id="reportSection"><div class="report-heading"><h2><svg class="ui-icon"><use href="#i-chart"/></svg><span data-i18n="section_stats">統計報表</span></h2><button class="text-button" onclick="printOrders()" aria-label="列印訂單"><svg class="ui-icon"><use href="#i-print"/></svg><span data-ui="print">🖨️ 列印</span></button></div>
+   <div class="report-card"><table class="stats-table"><thead><tr><th scope="col" data-i18n="th_meal">餐點</th><th scope="col" data-i18n="th_price">單價</th><th scope="col" data-i18n="th_qty">數量</th><th scope="col" data-i18n="th_subtotal">小計</th></tr></thead><tbody id="statsBody"></tbody></table><div class="summary-box"><div><div class="total-label" data-i18n="summary_orders_label">總訂餐筆數</div><div class="total-amount" id="totalCount">0 筆</div></div><div class="total-value"><div class="total-label" data-i18n="summary_amount_label">應繳總金額</div><div class="total-amount" id="totalAmount">$0</div></div></div></div>
+  </section>
+ </div>
+ <section class="order-panel reveal delay-3" id="orderSection"><div class="panel-heading"><h2><svg class="ui-icon"><use href="#i-bag"/></svg><span data-i18n="section_order">訂餐登記</span></h2><span class="live-pill"><i></i>READY</span></div><div class="steps"><span class="current"><b>1</b><span data-ui="step1">輸入座號</span></span><i></i><span id="stepMeal"><b>2</b><span data-ui="step2">選擇餐點</span></span><i></i><span><b>3</b><span data-ui="step3">新增訂單</span></span></div>
+  <form id="orderForm" onsubmit="event.preventDefault();addOrder(event)" novalidate>
+   <div class="form-group"><label for="seatInput"><span data-i18n="label_seat">座號 (1 - 50)</span></label><input type="number" id="seatInput" min="1" max="50" step="1" inputmode="numeric" placeholder="輸入座號" data-ui-placeholder="seatPlaceholder" required oninput="this.classList.remove('field-error')"></div>
+   <div class="form-group"><label for="mealTrigger" data-i18n="label_meal">選擇餐點</label><div class="custom-select-wrapper" id="mealSelectWrapper"><div class="custom-select-trigger" id="mealTrigger" role="combobox" aria-expanded="false" aria-controls="mealDropdown" aria-haspopup="listbox" aria-label="選擇餐點" tabindex="0" onclick="toggleDropdown()">-- 請選擇餐點 --</div><div class="custom-select-dropdown" id="mealDropdown" role="listbox" aria-label="餐點選單"></div></div></div>
+   <div class="order-preview" aria-live="polite"><div class="preview-symbol" id="previewSymbol"><svg class="ui-icon"><use href="#i-bowl"/></svg></div><div class="preview-text"><span data-ui="selectedLabel">選擇餐點</span><strong id="previewName" data-ui="unselected">-- 請選擇餐點 --</strong></div><div class="preview-price" id="previewPrice"><small>NT$ </small>—</div></div>
+   <button type="submit" class="btn btn-primary" id="submitOrder"><span data-i18n="btn_add">➕ 新增訂單</span><svg class="ui-icon"><use href="#i-arrow"/></svg></button>
+  </form>
+ </section>
+</div>
+<div class="utility-section">
+ <section class="utility-card" id="querySection"><h2 class="section-label"><svg class="ui-icon"><use href="#i-search"/></svg><span data-i18n="section_query">依座號查詢</span></h2><form class="query-row" onsubmit="event.preventDefault();queryOrder(event)"><input type="number" id="querySeat" min="1" max="50" step="1" aria-label="查詢座號" placeholder="輸入座號" data-i18n-placeholder="placeholder_query"><button class="btn btn-outline btn-small" type="submit"><span data-i18n="btn_query">查詢 →</span></button></form><div id="queryResult" aria-live="polite"></div></section>
+ <section class="utility-card" id="backupSection"><h2 class="section-label"><svg class="ui-icon"><use href="#i-file"/></svg><span data-ui="backup">檔案備份 / 讀取</span></h2><div class="file-actions"><button class="btn btn-outline" onclick="exportJSON(event)"><svg class="ui-icon"><use href="#i-download"/></svg><span data-i18n="btn_export">💾 匯出 JSON</span></button><button class="btn btn-outline" onclick="exportCSV(event)"><svg class="ui-icon"><use href="#i-download"/></svg><span data-i18n="btn_export_csv">📊 匯出 CSV</span></button><button class="btn btn-outline import-btn" onclick="document.getElementById('fileInput').click()"><svg class="ui-icon"><use href="#i-upload"/></svg><span data-ui="import">📁 讀取檔案</span></button><input type="file" id="fileInput" class="hidden-file" accept=".json,application/json" onchange="importJSON(event)" aria-label="匯入訂單備份"></div></section>
+ <section class="utility-card"><h2 class="section-label"><svg class="ui-icon"><use href="#i-clock"/></svg><span data-i18n="section_log">即時登記明細</span><span class="count-pill" id="logCount" style="margin-left:auto">0</span></h2><div class="log-area" id="logArea" aria-live="polite"></div></section>
+</div></main>
+<footer class="footer"><div class="footer-brand"><svg class="ui-icon"><use href="#i-bowl"/></svg>© 2026 <span data-i18n="footer_system">校園午餐訂餐系統</span></div><div class="footer-note">Designed with minimalism</div><div class="footer-links"><button onclick="openHelpModal()" data-ui="guide">說明</button><button onclick="openUpdateModal()" data-ui="updates">更新內容</button><button onclick="openSettingsModal()" data-ui="settings">設定</button></div></footer>
+<a class="mobile-order-link" href="#orderSection" onclick="navigateTo(event,'orderSection')"><svg class="ui-icon"><use href="#i-bag"/></svg><span data-i18n="section_order">訂餐登記</span></a>
+
+<div class="toast" id="toast"></div>
+
+<div class="modal-overlay" id="updateModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeUpdateModal()">×</button>
+    <div id="updateModalContent"></div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="helpModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeHelpModal()">×</button>
+    <div id="helpModalContent"></div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="settingsModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeSettingsModal()">×</button>
+    <h2 data-i18n="settings_title">設定</h2>
+    <div id="settingsContent"></div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="passwordModal">
+  <div class="password-modal">
+    <button class="modal-close" onclick="closePasswordModal()">×</button>
+    <h3 data-i18n="admin_password_title">Admin Verification</h3>
+    <p class="password-subtitle" data-i18n="admin_password_subtitle">Please enter the admin password to continue</p>
+    <div class="password-input-wrapper">
+      <input type="password" class="password-input" id="passwordInput" placeholder="Password" autocomplete="off">
+      <div class="password-error-msg" id="passwordError"></div>
+    </div>
+    <div class="password-actions">
+      <button class="btn btn-outline" onclick="closePasswordModal()"><span data-i18n="admin_cancel">Cancel</span></button>
+      <button class="btn btn-primary" onclick="verifyPassword()"><span data-i18n="admin_confirm">Confirm</span></button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="adminModal">
+  <div class="admin-modal">
+    <button class="modal-close" onclick="closeAdminModal()">×</button>
+    <h2 data-i18n="admin_panel_title">Admin Panel</h2>
+    <div class="admin-tabs" id="adminTabs"></div>
+    <div id="adminTabContent"></div>
+  </div>
+</div>
+
+<div class="confirm-overlay" id="confirmOverlay">
+  <div class="confirm-box">
+    <h3 id="confirmTitle"></h3>
+    <p id="confirmMessage"></p>
+    <div class="confirm-actions">
+      <button class="btn btn-outline" onclick="closeConfirm()"><span data-i18n="confirm_cancel">取消</span></button>
+      <button class="btn btn-danger" id="confirmOkBtn"><span data-i18n="confirm_ok">確定</span></button>
+    </div>
+  </div>
+</div>
+
+<div class="print-area" id="printArea"></div>
+
+
+<script src="./app.js"></script></body></html>
